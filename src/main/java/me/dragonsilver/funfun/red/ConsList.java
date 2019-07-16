@@ -1,6 +1,7 @@
 package me.dragonsilver.funfun.red;
 
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 public abstract class ConsList<T> {
 
@@ -20,11 +21,36 @@ public abstract class ConsList<T> {
     }
 
     public static  <T, R> ConsList<R> map (ConsList<R> acc, ConsList<T> list, Function<T, R> predicate) {
-           if ( list == Nil) {
-               return acc;
+           if (list == Nil) {
+               return acc.reverse(Nil);
            } else {
                return map(new Cons<R>(predicate.apply(list.head()), acc) ,list.tail(), predicate);
            }
+    }
+
+    public ConsList<T> reverse(ConsList<T> acc) {
+        if (this instanceof Nil) {
+            return acc;
+        } else {
+            ConsList<T> temp = acc;
+            acc = new Cons<>(this.head(), temp);
+            return this.tail().reverse(acc);
+        }
+    }
+
+    public static <T, R> ConsList<R> filter(ConsList<R> acc, ConsList<T> list, Predicate<T> predicate) {
+        if (list == Nil) {
+            return acc.reverse(Nil);
+        } else {
+            ConsList<R> temp;
+            if (predicate.test(list.head())) {
+                temp = new Cons<R>(acc.head(), acc);
+            } else {
+                temp = acc;
+            }
+            return filter(temp, list.tail(), predicate);
+        }
+
     }
 
     // filter, sequence
