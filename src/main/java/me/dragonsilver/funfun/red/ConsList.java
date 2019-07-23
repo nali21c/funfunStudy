@@ -38,20 +38,30 @@ public abstract class ConsList<T> {
         }
     }
 
-    public static <T, R> ConsList<R> filter(ConsList<R> acc, ConsList<T> list, Predicate<T> predicate) {
+    public static <T> ConsList<T> filter(ConsList<T> acc, ConsList<T> list, Predicate<T> predicate) {
         if (list == Nil) {
             return acc.reverse(Nil);
         } else {
-            ConsList<R> temp;
+            ConsList<T> temp;
             if (predicate.test(list.head())) {
-                temp = new Cons<R>(acc.head(), acc);
+                temp = new Cons<>(list.head(), acc);
             } else {
                 temp = acc;
             }
             return filter(temp, list.tail(), predicate);
         }
-
     }
+
+    public static <T> int sum(ConsList<T> acc) {
+        if (acc == Nil) {
+            return acc;
+        } else {
+
+            return sum(new Cons<T>(list.head() + list.tail(), acc), list.tail());
+        }
+    }
+
+
 
     // filter, sequence
     // stream 은 레이지하게
